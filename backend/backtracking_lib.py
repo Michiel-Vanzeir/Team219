@@ -56,11 +56,10 @@ class Backtracking:
         self.gridboard = gridboard
         self.initial_position = initial_position
         self.path = list()
-        self.visited = defaultdict(int)
+        self.visited = set()
         self.counter = 0
         
         self.optimal_path = []
-        self.max_visits = 2
 
     def findPath(self):
         self.visited.clear()
@@ -70,12 +69,12 @@ class Backtracking:
 
     def _recursiveBacktracking(self, current_position, path):
         path.append(current_position)
-        self.visited[current_position] += 1
+        self.visited.add(current_position)
 
         # Pruning
         if self.optimal_path and len(path) >= len(self.optimal_path):
             path.pop()
-            self.visited[current_position] -= 1
+            self.visited.add(current_position)
             return
 
         # Check if path is completed
@@ -86,16 +85,14 @@ class Backtracking:
 
         neighbours = self.gridboard.positions[current_position]
         for neighbour in neighbours:
-            if  self.visited[neighbour] < self.max_visits or len(neighbours) == 1 or (neighbour == self.initial_position and self.visitedAllTowers(path)): 
+            if  neighbour not in self.visited or len(neighbours) == 1 or (neighbour == self.initial_position and self.visitedAllTowers(path)): 
                 self.counter += 1
                 #print("Now:", self.counter)  # Commented out to improve performance
-                if self.counter > 15000000:
-                    print("stop")
                 self._recursiveBacktracking(neighbour, path) 
 
         # Backtracking / explore another neighbour
         path.pop()
-        self.visited[current_position] -= 1
+        self.visited.discard(current_position)
 
     def checkPath(self, path):
         # Check if the car is back to the garage
@@ -118,4 +115,3 @@ class Backtracking:
             if tower not in path:
                 return False
         return True
-        
