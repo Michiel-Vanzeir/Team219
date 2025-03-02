@@ -39,10 +39,12 @@ def DetermineShortestPath(data):
         print("Error: Missing parameters in data dictionary")
         return
 
+    
     grid = GridBoard(rows, cols, green_towers, red_towers)
     backtracker = Backtracking(grid, initial_position=(1,1))
     optimal_path = backtracker.findShortestPath()
 
+    print(f"optimal path: {optimal_path}")
     path_data = {
         'path': optimal_path
     }

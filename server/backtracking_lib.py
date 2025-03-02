@@ -96,10 +96,10 @@ class Backtracking:
         self.visited.add(current_position)
 
         # Pruning
-        # if self.optimal_path and len(path) >= len(self.optimal_path):
-        #     path.pop()
-        #     self.visited.add(current_position)
-        #     return
+        if self.optimal_path and len(path) >= len(self.optimal_path):
+            path.pop()
+            self.visited.add(current_position)
+            return
 
         # Check if path is completed
         if self.checkPath(path, goal_position):
@@ -122,7 +122,6 @@ class Backtracking:
         # Check if the car is back to the garage
         if path[-1] != goal_position:
             return False
-            
         return True
     
     def calculateTowerPermutations(self):
