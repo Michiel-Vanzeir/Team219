@@ -1,0 +1,10 @@
+{
+    "name": "team219-server",
+    "version": "0.0.1",
+    "description": "Server for the robot of team 219",
+    "type": "module",
+    "dependencies": {
+        "express": "^4.21.2",
+        "socket.io": "^4.8.1"
+    }
+}

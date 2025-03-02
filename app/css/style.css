@@ -28,7 +28,7 @@ body {
 .image-container {
     position: relative;
     width: 100%;
-    margin-top: 5%;    
+    margin-top: 5%;
 }
 
 .hero-img {
@@ -134,10 +134,19 @@ body {
     margin-top: 4%;
 }
 
-.navigation-img {
-    margin: auto;
-    height: 85%;
-    max-width: 100%;
+.grid-container {
+    display: grid;
+    gap: 0;
+    padding: 25px;
+    width: 100%;
+    height: 100%;
+}
+
+.grid-cell {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 2px solid #242331;
 }
 
 .footer {
@@ -145,6 +154,84 @@ body {
     text-align: center;
     margin-top: 5vh;
 }
+
+/* AUTONOMOUS NAVIGATION INTERACTIVITY */
+
+.path-card {
+    background-color: transparent;
+    width: auto;
+    height: 100%;
+    perspective: 1000px;
+}
+
+.path-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s;
+}
+
+.flipped {
+    transform: rotateY(180deg);
+}
+
+.path-card-front,
+.path-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 15px;
+}
+
+.path-card-front {
+    background-color: white;
+}
+
+.path-card-back {
+    background-color: white;
+    transform: rotateY(180deg);
+    padding: 25px;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 20px;
+    row-gap: 0px;
+}
+
+form h4 {
+    color: #0B1523;
+}
+
+.input-pair {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 40%;
+}
+
+.form-label {
+    margin-bottom: 5px;
+}
+
+.form-input,
+.form-input-number {
+    padding: 2px;
+    margin-bottom: 5px;
+}
+
+.path-btn {
+    background-color: #0B1523;
+    color: white;
+    font-family: "Poppins", "Roboto";
+    margin-top: 10px;
+}
+
+
+
 
 /* BACKGROUND FIGURES */
 .ellipses {
@@ -177,9 +264,9 @@ body {
 
 @media (max-width: 991.98px) {
     .col-center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-left: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
     }
-  }
+}
