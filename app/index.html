@@ -51,34 +51,35 @@
     <div class="row properties">
       <div class="col-md-4">
         <img src="images/Fast.png" class="icon" alt="" />
-        <h2>Fast</h2>
+        <h2>The Fastest...</h2>
       </div>
       <div class="col-md-4">
         <img src="images/Reliable.png" class="icon" alt="" />
-        <h2>Most Efficient</h2>
+        <h2>Most Efficient...</h2>
       </div>
       <div class="col-md-4">
         <img src="images/Accurate.png" class="icon" alt="" />
-        <h2>Best Handling</h2>
+        <h2>And most reliable</h2>
       </div>
     </div>
 
     <!-- NAVIGATION SECTION -->
     <div class="row navigation-section">
-      <div class="col-lg-5 navigation-text">
+      <div class="col-lg-5 navigation-text navigation-column">
         <div class="vertical-line"></div>
         <h2>Autonomous Navigation</h2>
         <p>
-          elit. In tempor nisl. Nunc Sed lacus dolor faucibus amet, venenatis
-          diam libero, luctus cursus efficitur. efficitur. commodo at,
-          faucibus laoreet Praesent vel tincidunt varius id efficitur. Ut Nunc
-          dignissim, lobortis, orci odio sit sed
+          Our autonomous navigation algorithm uses backtracking to explore all possible combinations of towers and
+          determine the shortest path. The algorithm recursively checks each potential route between the towers,
+          evaluating all possibilities. It then selects the shortest path found, ensuring the towers are visited in the
+          most efficient way while avoiding obstacles. This approach solves the Traveling Salesman Problem on a grid.
+          This method is most feasible when the grid remains small.
         </p>
         <button type="button" class="btn navigation-btn">
           Try it yourself
         </button>
       </div>
-      <div class="col-lg-7">
+      <div class="col-lg-7 navigation-column">
         <div class="path-card">
           <div class="path-card-inner">
             <div class="path-card-front">
@@ -97,13 +98,13 @@
                 </div>
                 <div class="input-pair">
                   <label for="green_towers" class="form-label">Green Towers:</label>
-                  <input type="text" id="green_towers" name="green_towers" class="form-input" value="(3,3),(1,6)"/>
+                  <input type="text" id="green_towers" name="green_towers" class="form-input" value="(3,3),(1,6)" />
                 </div>
                 <div class="input-pair">
                   <label for="red_towers" class="form-label">Red Towers:</label>
-                  <input type="text" id="red_towers" name="red_towers" class="form-input" value="(4,4),(1,2)"/>
+                  <input type="text" id="red_towers" name="red_towers" class="form-input" value="(4,4),(1,2)" />
                 </div>
-                <button type="button" class="btn path-btn">Generate Path</button>
+                <button type="button" class="btn path-btn">Find Optimal Path</button>
               </form>
 
             </div>
@@ -127,7 +128,7 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-        <script defer src="index.js"></script>
+      <script defer src="index.js"></script>
 </body>
 
 </html>
