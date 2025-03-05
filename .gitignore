@@ -10,6 +10,11 @@ build/
 *.bak
 *.swp
 
+# ROS
+ros2_ws/install/
+ros2_ws/log/
+ros2_ws/build/
+
 # Flask instance folder
 instance/
 
