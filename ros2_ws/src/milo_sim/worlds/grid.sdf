@@ -1,0 +1,314 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <world name="custom_world">
+
+    <!-- Ground plane -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.2 1.6 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient> <!-- White -->
+            <diffuse>1 1 1 1</diffuse> <!-- White -->
+            <emissive>1 1 1 1</emissive>
+            <specular>0 0 0 0</specular> <!-- No specular reflection -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Walls -->
+    <model name="wall_north">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.2 0.01 0.15</size>
+            </box>
+          </geometry>
+          <pose>0 0.8 0.075 0 0 0</pose> <!-- North wall -->
+          <material>
+            <ambient>0.8 0.52 0.25 1</ambient> <!-- Light brown, like wood -->
+            <diffuse>0.8 0.52 0.25 1</diffuse> <!-- Light brown, like wood -->
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.2 0.01 0.15</size>
+            </box>
+          </geometry>
+          <pose>0 0.8 0.075 0 0 0</pose> <!-- Same pose as visual -->
+        </collision>
+      </link>
+    </model>
+
+    <model name="wall_south">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.2 0.01 0.15</size>
+            </box>
+          </geometry>
+          <pose>0 -0.8 0.075 0 0 0</pose> <!-- South wall -->
+          <material>
+            <ambient>0.8 0.52 0.25 1</ambient> <!-- Light brown, like wood -->
+            <diffuse>0.8 0.52 0.25 1</diffuse> <!-- Light brown, like wood -->
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.2 0.01 0.15</size>
+            </box>
+          </geometry>
+          <pose>0 -0.8 0.075 0 0 0</pose> <!-- Same pose as visual -->
+        </collision>
+      </link>
+    </model>
+
+    <model name="wall_east">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.01 1.6 0.15</size>
+            </box>
+          </geometry>
+          <pose>1.1 0 0.075 0 0 0</pose> <!-- East wall -->
+          <material>
+            <ambient>0.8 0.52 0.25 1</ambient> <!-- Light brown, like wood -->
+            <diffuse>0.8 0.52 0.25 1</diffuse> <!-- Light brown, like wood -->
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.01 1.6 0.15</size>
+            </box>
+          </geometry>
+          <pose>1.1 0 0.075 0 0 0</pose> <!-- Same pose as visual -->
+        </collision>
+      </link>
+    </model>
+
+    <model name="wall_west">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.01 1.6 0.15</size>
+            </box>
+          </geometry>
+          <pose>-1.1 0 0.075 0 0 0</pose> <!-- West wall -->
+          <material>
+            <ambient>0.8 0.52 0.25 1</ambient> <!-- Light brown, like wood -->
+            <diffuse>0.8 0.52 0.25 1</diffuse> <!-- Light brown, like wood -->
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.01 1.6 0.15</size>
+            </box>
+          </geometry>
+          <pose>-1.1 0 0.075 0 0 0</pose> <!-- Same pose as visual -->
+        </collision>
+      </link>
+    </model>
+
+    <!-- Grid Lines -->
+    <!-- Horizontal grid lines -->
+    <model name="gridline_h2">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.2 0.02 0.002</size>
+            </box>
+          </geometry>
+          <pose>0 -0.45 0.01 0 0 0</pose>
+          <material>
+            <ambient>0 0 0 1</ambient> <!-- Black -->
+            <diffuse>0 0 0 1</diffuse> <!-- Black -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="gridline_h3">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.2 0.02 0.002</size>
+            </box>
+          </geometry>
+          <pose>0 -0.15 0.01 0 0 0</pose>
+          <material>
+            <ambient>0 0 0 1</ambient> <!-- Black -->
+            <diffuse>0 0 0 1</diffuse> <!-- Black -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="gridline_h4">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.2 0.02 0.002</size>
+            </box>
+          </geometry>
+          <pose>0 0.15 0.01 0 0 0</pose>
+          <material>
+            <ambient>0 0 0 1</ambient> <!-- Black -->
+            <diffuse>0 0 0 1</diffuse> <!-- Black -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="gridline_h5">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.2 0.02 0.002</size>
+            </box>
+          </geometry>
+          <pose>0 0.45 0.01 0 0 0</pose>
+          <material>
+            <ambient>0 0 0 1</ambient> <!-- Black -->
+            <diffuse>0 0 0 1</diffuse> <!-- Black -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Vertical grid lines -->
+    <model name="gridline_v1">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.02 1.6 0.002</size>
+            </box>
+          </geometry>
+          <pose>0.15 0 0.1 0 0 0</pose>
+          <material>
+            <ambient>0 0 0 1</ambient> <!-- Black -->
+            <diffuse>0 0 0 1</diffuse> <!-- Black -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="gridline_v2">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.02 1.6 0.002</size>
+            </box>
+          </geometry>
+          <pose>-0.15 0 0.1 0 0 0</pose>
+          <material>
+            <ambient>0 0 0 1</ambient> <!-- Black -->
+            <diffuse>0 0 0 1</diffuse> <!-- Black -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="gridline_v3">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.02 1.6 0.002</size>
+            </box>
+          </geometry>
+          <pose>0.45 0 0.1 0 0 0</pose>
+          <material>
+            <ambient>0 0 0 1</ambient> <!-- Black -->
+            <diffuse>0 0 0 1</diffuse> <!-- Black -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="gridline_v4">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.02 1.6 0.002</size>
+            </box>
+          </geometry>
+          <pose>-0.45 0 0.1 0 0 0</pose>
+          <material>
+            <ambient>0 0 0 1</ambient> <!-- Black -->
+            <diffuse>0 0 0 1</diffuse> <!-- Black -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="gridline_v7">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.02 1.6 0.002</size>
+            </box>
+          </geometry>
+          <pose>0.75 0 0.1 0 0 0</pose>
+          <material>
+            <ambient>0 0 0 1</ambient> <!-- Black -->
+            <diffuse>0 0 0 1</diffuse> <!-- Black -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="gridline_v9">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.02 1.6 0.002</size>
+            </box>
+          </geometry>
+          <pose>-0.75 0 0.1 0 0 0</pose>
+          <material>
+            <ambient>0 0 0 1</ambient> <!-- Black -->
+            <diffuse>0 0 0 1</diffuse> <!-- Black -->
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
