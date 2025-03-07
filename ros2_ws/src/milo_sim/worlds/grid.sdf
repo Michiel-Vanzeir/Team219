@@ -1,6 +1,20 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version="1.7">
-  <world name="custom_world">
+  <world name="peno_environment">
+
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+
 
     <!-- Ground plane -->
     <model name="ground_plane">
@@ -19,6 +33,13 @@
             <specular>0 0 0 0</specular> <!-- No specular reflection -->
           </material>
         </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.2 1.6 0.01</size>
+            </box>
+          </geometry>
+        </collision>
       </link>
     </model>
 
@@ -211,7 +232,7 @@
               <size>0.02 1.6 0.002</size>
             </box>
           </geometry>
-          <pose>0.15 0 0.1 0 0 0</pose>
+          <pose>0.15 0 0.01 0 0 0</pose>
           <material>
             <ambient>0 0 0 1</ambient> <!-- Black -->
             <diffuse>0 0 0 1</diffuse> <!-- Black -->
@@ -229,7 +250,7 @@
               <size>0.02 1.6 0.002</size>
             </box>
           </geometry>
-          <pose>-0.15 0 0.1 0 0 0</pose>
+          <pose>-0.15 0 0.01 0 0 0</pose>
           <material>
             <ambient>0 0 0 1</ambient> <!-- Black -->
             <diffuse>0 0 0 1</diffuse> <!-- Black -->
@@ -247,7 +268,7 @@
               <size>0.02 1.6 0.002</size>
             </box>
           </geometry>
-          <pose>0.45 0 0.1 0 0 0</pose>
+          <pose>0.45 0 0.01 0 0 0</pose>
           <material>
             <ambient>0 0 0 1</ambient> <!-- Black -->
             <diffuse>0 0 0 1</diffuse> <!-- Black -->
@@ -265,7 +286,7 @@
               <size>0.02 1.6 0.002</size>
             </box>
           </geometry>
-          <pose>-0.45 0 0.1 0 0 0</pose>
+          <pose>-0.45 0 0.01 0 0 0</pose>
           <material>
             <ambient>0 0 0 1</ambient> <!-- Black -->
             <diffuse>0 0 0 1</diffuse> <!-- Black -->
@@ -283,7 +304,7 @@
               <size>0.02 1.6 0.002</size>
             </box>
           </geometry>
-          <pose>0.75 0 0.1 0 0 0</pose>
+          <pose>0.75 0 0.01 0 0 0</pose>
           <material>
             <ambient>0 0 0 1</ambient> <!-- Black -->
             <diffuse>0 0 0 1</diffuse> <!-- Black -->
@@ -301,7 +322,7 @@
               <size>0.02 1.6 0.002</size>
             </box>
           </geometry>
-          <pose>-0.75 0 0.1 0 0 0</pose>
+          <pose>-0.75 0 0.01 0 0 0</pose>
           <material>
             <ambient>0 0 0 1</ambient> <!-- Black -->
             <diffuse>0 0 0 1</diffuse> <!-- Black -->

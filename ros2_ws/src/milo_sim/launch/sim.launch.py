@@ -28,6 +28,8 @@ def generate_launch_description():
         }]
     )
 
+
+
     # Correct path to the world file
     world = get_package_share_path(package_name) / "worlds" / "grid.sdf"
 
@@ -50,7 +52,7 @@ def generate_launch_description():
             "-topic", "/robot_description",
             "-x", "0",
             "-y", "0",
-            "-z", "0.02",
+            "-z", "0.1",
         ],
         output="screen",
     )
