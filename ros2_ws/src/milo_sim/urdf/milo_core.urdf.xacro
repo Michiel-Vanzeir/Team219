@@ -51,6 +51,15 @@
     </xacro:inertial_box>
   </link>
 
+  <!-- Chassis center link to link the LDRs to -->
+  <joint name="chassis_center_joint" type="fixed">
+    <parent link="chassis_link"/>
+    <child link="chassis_center_link"/>
+    <origin xyz="${chassis_length/2} 0 0" rpy="0 0 0"/>
+  </joint>
+  
+  <link name="chassis_center_link"></link>
+
   <!-- WHEELS (looked at from the front of the robot) -->
   <joint name="BR_wheel_joint" type="continuous">
     <parent link="chassis_link" />
@@ -72,14 +81,14 @@
         <cylinder radius="${wheel_radius}" length="${wheel_thickness}" />
       </geometry>
       <surface>
-      <friction>
-        <ode>
-          <mu>0.8</mu>
-          <mu2>0.5</mu2>
-          <fdir1>1 -1 0</fdir1>
-        </ode>
-      </friction>
-    </surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.5</mu2>
+            <fdir1>1 -1 0</fdir1>
+          </ode>
+        </friction>
+      </surface>
       <origin xyz="0 0 ${-wheel_thickness/2}" />
     </collision>
     <xacro:inertial_cylinder mass="0.020" radius="${wheel_radius}" length="${wheel_thickness}">
@@ -108,14 +117,14 @@
         <cylinder radius="${wheel_radius}" length="${wheel_thickness}" />
       </geometry>
       <surface>
-      <friction>
-        <ode>
-          <mu>0.8</mu>
-          <mu2>0.5</mu2>
-          <fdir1>-1 -1 0</fdir1>
-        </ode>
-      </friction>
-    </surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.5</mu2>
+            <fdir1>-1 -1 0</fdir1>
+          </ode>
+        </friction>
+      </surface>
       <origin xyz="0 0 ${wheel_thickness/2}" />
     </collision>
     <xacro:inertial_cylinder mass="0.020" radius="${wheel_radius}" length="${wheel_thickness}">
@@ -144,14 +153,14 @@
         <cylinder radius="${wheel_radius}" length="${wheel_thickness}" />
       </geometry>
       <surface>
-      <friction>
-        <ode>
-          <mu>0.8</mu>
-          <mu2>0.5</mu2>
-          <fdir1>-1 1 0</fdir1>
-        </ode>
-      </friction>
-    </surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.5</mu2>
+            <fdir1>-1 1 0</fdir1>
+          </ode>
+        </friction>
+      </surface>
       <origin xyz="0 0 ${wheel_thickness/2}" />
     </collision>
     <xacro:inertial_cylinder mass="0.020" radius="${wheel_radius}" length="${wheel_thickness}">
@@ -180,14 +189,14 @@
         <cylinder radius="${wheel_radius}" length="${wheel_thickness}" />
       </geometry>
       <surface>
-      <friction>
-        <ode>
-          <mu>0.8</mu>
-          <mu2>0.5</mu2>
-          <fdir1>1 1 0</fdir1>
-        </ode>
-      </friction>
-    </surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.5</mu2>
+            <fdir1>1 1 0</fdir1>
+          </ode>
+        </friction>
+      </surface>
       <origin xyz="0 0 ${-wheel_thickness/2}" />
     </collision>
     <xacro:inertial_cylinder mass="0.020" length="${wheel_thickness}" radius="${wheel_radius}">
@@ -197,8 +206,9 @@
 
   <!-- LDR PLACEMENTS -->
   <joint name="center_ldr_joint" type="fixed">
-    <parent link="base_link" />
+    <parent link="chassis_center_link" />
     <child link="center_ldr_link" />
+    <origin xyz="0 0 ${-ldr_height/2}" rpy="0 ${pi/2} 0"/>
   </joint>
 
   <link name="center_ldr_link">
@@ -207,14 +217,23 @@
         <box size="${ldr_height} ${ldr_height} ${ldr_height}" />
       </geometry>
       <material name="red" />
-      <origin xyz="0 0 ${-ldr_height/2}" />
+      <origin xyz="0 0 ${-ldr_height/2}" rpy="0 0 0"/>
     </visual>
+    <collision>
+      <geometry>
+        <box size="${ldr_height} ${ldr_height} ${ldr_height}"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.001" x="${ldr_height}" y="${ldr_height}"
+      z="${ldr_height}">
+      <origin xyz="0 0 ${ldr_height/2}" />
+    </xacro:inertial_box>
   </link>
 
   <joint name="x1_ldr_joint" type="fixed">
     <parent link="center_ldr_link" />
     <child link="x1_ldr_link" />
-    <origin xyz="${ldr_inter_offset} 0 0" />
+    <origin xyz="0 0 ${ldr_inter_offset}" />
   </joint>
 
   <link name="x1_ldr_link">
@@ -225,12 +244,21 @@
       <material name="red" />
       <origin xyz="0 0 ${-ldr_height/2}" />
     </visual>
+    <collision>
+      <geometry>
+        <box size="${ldr_height} ${ldr_height} ${ldr_height}"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.001" x="${ldr_height}" y="${ldr_height}"
+      z="${ldr_height}">
+      <origin xyz="0 0 ${-ldr_height/2}" />
+    </xacro:inertial_box>
   </link>
 
   <joint name="x2_ldr_joint" type="fixed">
     <parent link="x1_ldr_link" />
     <child link="x2_ldr_link" />
-    <origin xyz="${ldr_inter_offset} 0 0" />
+    <origin xyz="0 0 ${ldr_inter_offset}" />
   </joint>
 
   <link name="x2_ldr_link">
@@ -241,12 +269,21 @@
       <material name="red" />
       <origin xyz="0 0 ${-ldr_height/2}" />
     </visual>
+    <collision>
+      <geometry>
+        <box size="${ldr_height} ${ldr_height} ${ldr_height}"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.001" x="${ldr_height}" y="${ldr_height}"
+      z="${ldr_height}">
+      <origin xyz="0 0 ${-ldr_height/2}" />
+    </xacro:inertial_box>
   </link>
 
   <joint name="x-1_ldr_joint" type="fixed">
     <parent link="center_ldr_link" />
     <child link="x-1_ldr_link" />
-    <origin xyz="${-ldr_inter_offset} 0 0" />
+    <origin xyz="0 0 ${-ldr_inter_offset}" />
   </joint>
 
   <link name="x-1_ldr_link">
@@ -257,12 +294,21 @@
       <material name="red" />
       <origin xyz="0 0 ${-ldr_height/2}" />
     </visual>
+    <collision>
+      <geometry>
+        <box size="${ldr_height} ${ldr_height} ${ldr_height}"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.001" x="${ldr_height}" y="${ldr_height}"
+      z="${ldr_height}">
+      <origin xyz="0 0 ${-ldr_height/2}" />
+    </xacro:inertial_box>
   </link>
 
   <joint name="x-2_ldr_joint" type="fixed">
     <parent link="x-1_ldr_link" />
     <child link="x-2_ldr_link" />
-    <origin xyz="${-ldr_inter_offset} 0 0" />
+    <origin xyz="0 0 ${-ldr_inter_offset}" />
   </joint>
 
   <link name="x-2_ldr_link">
@@ -273,6 +319,15 @@
       <material name="red" />
       <origin xyz="0 0 ${-ldr_height/2}" />
     </visual>
+    <collision>
+      <geometry>
+        <box size="${ldr_height} ${ldr_height} ${ldr_height}"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.001" x="${ldr_height}" y="${ldr_height}"
+      z="${ldr_height}">
+      <origin xyz="0 0 ${-ldr_height/2}" />
+    </xacro:inertial_box>
   </link>
 
   <joint name="y-1_ldr_joint" type="fixed">
@@ -289,6 +344,15 @@
       <material name="red" />
       <origin xyz="0 0 ${-ldr_height/2}" />
     </visual>
+    <collision>
+      <geometry>
+        <box size="${ldr_height} ${ldr_height} ${ldr_height}"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.001" x="${ldr_height}" y="${ldr_height}"
+      z="${ldr_height}">
+      <origin xyz="0 0 ${-ldr_height/2}" />
+    </xacro:inertial_box>
   </link>
 
   <joint name="y-2_ldr_joint" type="fixed">
@@ -305,6 +369,15 @@
       <material name="red" />
       <origin xyz="0 0 ${-ldr_height/2}" />
     </visual>
+    <collision>
+      <geometry>
+        <box size="${ldr_height} ${ldr_height} ${ldr_height}"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.001" x="${ldr_height}" y="${ldr_height}"
+      z="${ldr_height}">
+      <origin xyz="0 0 ${-ldr_height/2}" />
+    </xacro:inertial_box>
   </link>
 
   <joint name="y1_ldr_joint" type="fixed">
@@ -321,6 +394,15 @@
       <material name="red" />
       <origin xyz="0 0 ${-ldr_height/2}" />
     </visual>
+    <collision>
+      <geometry>
+        <box size="${ldr_height} ${ldr_height} ${ldr_height}"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.001" x="${ldr_height}" y="${ldr_height}"
+      z="${ldr_height}">
+      <origin xyz="0 0 ${-ldr_height/2}" />
+    </xacro:inertial_box>
   </link>
 
   <joint name="y2_ldr_joint" type="fixed">
@@ -337,6 +419,15 @@
       <material name="red" />
       <origin xyz="0 0 ${-ldr_height/2}" />
     </visual>
+    <collision>
+      <geometry>
+        <box size="${ldr_height} ${ldr_height} ${ldr_height}"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.001" x="${ldr_height}" y="${ldr_height}"
+      z="${ldr_height}">
+      <origin xyz="0 0 ${-ldr_height/2}" />
+    </xacro:inertial_box>
   </link>
 
   <!-- GAZEBO information -->
@@ -354,5 +445,141 @@
       <min_acceleration>-5</min_acceleration>
       <max_acceleration>5</max_acceleration>
     </plugin>
+  </gazebo>
+
+  <gazebo reference="x1_ldr_link">
+    <sensor name="front_LDR1" type="camera">
+      <camera>
+        <horizontal_fov>1.0472</horizontal_fov>
+        <image>
+          <width>10</width>
+          <height>8</height>
+        </image>
+        <clip> <!-- The range of the camera-->
+          <near>0.001</near>
+          <far>0.2</far>
+        </clip>
+      </camera>
+      <topic>milo/fldr1</topic>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="x2_ldr_link">
+    <sensor name="front_LDR2" type="camera">
+      <camera>
+        <horizontal_fov>1.0472</horizontal_fov>
+        <image>
+          <width>10</width>
+          <height>8</height>
+        </image>
+        <clip> <!-- The range of the camera-->
+          <near>0.001</near>
+          <far>0.2</far>
+        </clip>
+      </camera>
+      <topic>milo/fldr2</topic>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="x-1_ldr_link">
+    <sensor name="back_LDR1" type="camera">
+      <camera>
+        <horizontal_fov>1.0472</horizontal_fov>
+        <image>
+          <width>10</width>
+          <height>8</height>
+        </image>
+        <clip> <!-- The range of the camera-->
+          <near>0.001</near>
+          <far>0.2</far>
+        </clip>
+      </camera>
+      <topic>milo/bldr1</topic>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="x-2_ldr_link">
+    <sensor name="back_LDR2" type="camera">
+      <camera>
+        <horizontal_fov>1.0472</horizontal_fov>
+        <image>
+          <width>10</width>
+          <height>8</height>
+        </image>
+        <clip> <!-- The range of the camera-->
+          <near>0.001</near>
+          <far>0.2</far>
+        </clip>
+      </camera>
+      <topic>milo/bldr2</topic>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="y1_ldr_link">
+    <sensor name="left_LDR1" type="camera">
+      <camera>
+        <horizontal_fov>1.0472</horizontal_fov>
+        <image>
+          <width>10</width>
+          <height>8</height>
+        </image>
+        <clip> <!-- The range of the camera-->
+          <near>0.001</near>
+          <far>0.2</far>
+        </clip>
+      </camera>
+      <topic>milo/lldr1</topic>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="y-1_ldr_link">
+    <sensor name="right_LDR1" type="camera">
+      <camera>
+        <horizontal_fov>1.0472</horizontal_fov>
+        <image>
+          <width>10</width>
+          <height>8</height>
+        </image>
+        <clip> <!-- The range of the camera-->
+          <near>0.001</near>
+          <far>0.2</far>
+        </clip>
+      </camera>
+      <topic>milo/rldr1</topic>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="y2_ldr_link">
+    <sensor name="left_LDR2" type="camera">
+      <camera>
+        <horizontal_fov>1.0472</horizontal_fov>
+        <image>
+          <width>10</width>
+          <height>8</height>
+        </image>
+        <clip> <!-- The range of the camera-->
+          <near>0.001</near>
+          <far>0.2</far>
+        </clip>
+      </camera>
+      <topic>milo/lldr2</topic>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="y-2_ldr_link">
+    <sensor name="right_LDR2" type="camera">
+      <camera>
+        <horizontal_fov>1.0472</horizontal_fov>
+        <image>
+          <width>10</width>
+          <height>8</height>
+        </image>
+        <clip> <!-- The range of the camera-->
+          <near>0.001</near>
+          <far>0.2</far>
+        </clip>
+      </camera>
+      <topic>milo/rldr2</topic>
+    </sensor>
   </gazebo>
 </robot>
