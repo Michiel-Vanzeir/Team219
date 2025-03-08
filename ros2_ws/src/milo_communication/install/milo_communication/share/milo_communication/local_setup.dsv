@@ -1,0 +1,4 @@
+source;share/milo_communication/environment/ament_prefix_path.sh
+source;share/milo_communication/environment/library_path.sh
+source;share/milo_communication/environment/path.sh
+source;share/milo_communication/environment/pythonpath.sh

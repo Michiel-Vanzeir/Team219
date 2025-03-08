@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from milo_communication/srv/LdrData.srv
+// generated code does not contain a copyright notice
+
+
+module milo_communication {
+  module srv {
+    @verbatim (language="comment", text=
+      "No request data")
+    struct LdrData_Request {
+      uint8 structure_needs_at_least_one_member;
+    };
+    typedef float float__4[4];
+    @verbatim (language="comment", text=
+      "Response data")
+    struct LdrData_Response {
+      float__4 lateral_ldr_intensities;
+
+      float__4 forward_ldr_intensities;
+    };
+  };
+};

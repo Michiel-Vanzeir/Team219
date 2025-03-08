@@ -1,0 +1,5 @@
+# No request data
+---
+# Response data
+float32[4] lateral_ldr_intensities 
+float32[4] forward_ldr_intensities

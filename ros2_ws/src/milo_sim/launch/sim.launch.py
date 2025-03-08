@@ -72,14 +72,19 @@ def generate_launch_description():
         arguments=['/milo/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist']
     )]
 
+    # LDR readings processor to convert the images to a single intensity value
+    # ldr_processor = [Node(
+    #     package='milo_sensor_data',
+    #     executable='ldr_data_processor'
+    # )]
+
     # Launch!
     launch_items = [
     DeclareLaunchArgument(
         'use_sim_time',
         default_value='true',
         description='Use sim time if true'
-    ),
-    node_robot_state_publisher, gz_sim, spawn_entity, motor_bridge]
+    ), node_robot_state_publisher, gz_sim, spawn_entity, motor_bridge]
     launch_items.extend(ldr_bridges)
 
     return LaunchDescription(launch_items)
