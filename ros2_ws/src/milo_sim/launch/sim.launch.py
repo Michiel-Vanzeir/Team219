@@ -57,11 +57,29 @@ def generate_launch_description():
         output="screen",
     )
 
+    # LDR data topics
+    ldr_topics = ['/milo/fldr1','/milo/fldr2','/milo/bldr1','/milo/bldr2','/milo/lldr1','/milo/lldr2','/milo/rldr1','/milo/rldr2']
+    # ROS-Gazebo bridge for LDR sensor data
+    ldr_bridges = [Node(
+        package='ros_gz_bridge', 
+        executable='parameter_bridge', 
+        arguments=[f'{topic}@sensor_msgs/msg/Image@gz.msgs.Image']) for topic in ldr_topics]
+
+    # Twist bridge for actuation between ROS and Gazebo
+    motor_bridge = [Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=['/milo/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist']
+    )]
+
     # Launch!
-    return LaunchDescription([
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='true',
-            description='Use sim time if true'),
-        node_robot_state_publisher, gz_sim, spawn_entity
-    ])
+    launch_items = [
+    DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='true',
+        description='Use sim time if true'
+    ),
+    node_robot_state_publisher, gz_sim, spawn_entity, motor_bridge]
+    launch_items.extend(ldr_bridges)
+
+    return LaunchDescription(launch_items)
