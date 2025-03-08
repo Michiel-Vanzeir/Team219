@@ -2,6 +2,11 @@
 <sdf version="1.7">
   <world name="peno_environment">
 
+    <!-- Necessary plugins -->
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
     <plugin
       filename="gz-sim-physics-system"
       name="gz::sim::systems::Physics">
@@ -14,6 +19,26 @@
       filename="gz-sim-user-commands-system"
       name="gz::sim::systems::UserCommands">
     </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <!-- Sun -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
 
 
     <!-- Ground plane -->
@@ -22,9 +47,10 @@
       <link name="link">
         <visual name="visual">
           <geometry>
-            <box>
-              <size>2.2 1.6 0.01</size>
-            </box>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>2.2 1.6</size>
+            </plane>
           </geometry>
           <material>
             <ambient>1 1 1 1</ambient> <!-- White -->
@@ -35,10 +61,19 @@
         </visual>
         <collision name="collision">
           <geometry>
-            <box>
-              <size>2.2 1.6 0.01</size>
-            </box>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>2.2 1.6</size>
+            </plane>
           </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.7</mu> <!-- Static friction -->
+                <mu2>0.5</mu2> <!-- Kinetic friction-->
+              </ode>
+            </friction>
+          </surface>
         </collision>
       </link>
     </model>
@@ -156,7 +191,7 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>2.2 0.02 0.002</size>
+              <size>2.2 0.02 0</size>
             </box>
           </geometry>
           <pose>0 -0.45 0.01 0 0 0</pose>
@@ -174,7 +209,7 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>2.2 0.02 0.002</size>
+              <size>2.2 0.02 0</size>
             </box>
           </geometry>
           <pose>0 -0.15 0.01 0 0 0</pose>
@@ -192,7 +227,7 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>2.2 0.02 0.002</size>
+              <size>2.2 0.02 0</size>
             </box>
           </geometry>
           <pose>0 0.15 0.01 0 0 0</pose>
@@ -210,7 +245,7 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>2.2 0.02 0.002</size>
+              <size>2.2 0.02 0</size>
             </box>
           </geometry>
           <pose>0 0.45 0.01 0 0 0</pose>
@@ -229,7 +264,7 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.02 1.6 0.002</size>
+              <size>0.02 1.6 0</size>
             </box>
           </geometry>
           <pose>0.15 0 0.01 0 0 0</pose>
@@ -247,7 +282,7 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.02 1.6 0.002</size>
+              <size>0.02 1.6 0</size>
             </box>
           </geometry>
           <pose>-0.15 0 0.01 0 0 0</pose>
@@ -265,7 +300,7 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.02 1.6 0.002</size>
+              <size>0.02 1.6 0</size>
             </box>
           </geometry>
           <pose>0.45 0 0.01 0 0 0</pose>
@@ -283,7 +318,7 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.02 1.6 0.002</size>
+              <size>0.02 1.6 0</size>
             </box>
           </geometry>
           <pose>-0.45 0 0.01 0 0 0</pose>
@@ -301,7 +336,7 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.02 1.6 0.002</size>
+              <size>0.02 1.6 0</size>
             </box>
           </geometry>
           <pose>0.75 0 0.01 0 0 0</pose>
@@ -319,7 +354,7 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.02 1.6 0.002</size>
+              <size>0.02 1.6 0</size>
             </box>
           </geometry>
           <pose>-0.75 0 0.01 0 0 0</pose>
