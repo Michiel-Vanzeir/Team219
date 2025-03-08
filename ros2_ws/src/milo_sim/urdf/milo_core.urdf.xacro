@@ -461,6 +461,7 @@
         </clip>
       </camera>
       <topic>milo/fldr1</topic>
+      <update_rate>7</update_rate>
     </sensor>
   </gazebo>
 
@@ -478,6 +479,7 @@
         </clip>
       </camera>
       <topic>milo/fldr2</topic>
+      <update_rate>7</update_rate>
     </sensor>
   </gazebo>
 
@@ -495,6 +497,7 @@
         </clip>
       </camera>
       <topic>milo/bldr1</topic>
+      <update_rate>7</update_rate>
     </sensor>
   </gazebo>
 
@@ -512,6 +515,7 @@
         </clip>
       </camera>
       <topic>milo/bldr2</topic>
+      <update_rate>7</update_rate>
     </sensor>
   </gazebo>
 
@@ -529,6 +533,7 @@
         </clip>
       </camera>
       <topic>milo/lldr1</topic>
+      <update_rate>7</update_rate>
     </sensor>
   </gazebo>
 
@@ -546,6 +551,7 @@
         </clip>
       </camera>
       <topic>milo/rldr1</topic>
+      <update_rate>7</update_rate>
     </sensor>
   </gazebo>
 
@@ -563,6 +569,7 @@
         </clip>
       </camera>
       <topic>milo/lldr2</topic>
+      <update_rate>7</update_rate>
     </sensor>
   </gazebo>
 
@@ -580,6 +587,7 @@
         </clip>
       </camera>
       <topic>milo/rldr2</topic>
+      <update_rate>7</update_rate>
     </sensor>
   </gazebo>
 </robot>
