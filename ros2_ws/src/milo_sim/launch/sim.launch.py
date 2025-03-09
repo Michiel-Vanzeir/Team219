@@ -66,11 +66,11 @@ def generate_launch_description():
         arguments=[f'{topic}@sensor_msgs/msg/Image@gz.msgs.Image']) for topic in ldr_topics]
 
     # Twist bridge for actuation between ROS and Gazebo
-    motor_bridge = [Node(
+    motor_bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=['/milo/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist']
-    )]
+    )
 
     # LDR readings processor to convert the images to a single intensity value
     # ldr_processor = [Node(
