@@ -41,6 +41,9 @@ CMakeLists.txt.user
 /build/
 /log/
 
+ros2_ws/install/
+ros2_ws/log/
+
 
 # Flask / Node.js (Server)
 *.db
