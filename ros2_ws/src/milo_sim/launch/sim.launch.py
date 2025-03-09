@@ -69,14 +69,26 @@ def generate_launch_description():
     motor_bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/milo/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist']
+        arguments=['/model/milo/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist']
     )
 
     # LDR readings processor to convert the images to a single intensity value
-    # ldr_processor = [Node(
-    #     package='milo_sensor_data',
-    #     executable='ldr_data_processor'
-    # )]
+    ldr_processor = Node(
+        package='milo_sensor_data',
+        executable='ldr_data_processor'
+    )
+
+    # PID controller that uses the data from the ldr_processor
+    pid_controller = Node(
+        package='milo_control',
+        executable='pidcontroller'
+    )
+
+    # Motor controller, converts the PID output to a Twist msg for Gazebo
+    motor_controller = Node(
+        package='milo_motion_control',
+        executable='motorcontroller'
+    )
 
     # Launch!
     launch_items = [
@@ -84,7 +96,7 @@ def generate_launch_description():
         'use_sim_time',
         default_value='true',
         description='Use sim time if true'
-    ), node_robot_state_publisher, gz_sim, spawn_entity, motor_bridge]
+    ), node_robot_state_publisher, gz_sim, spawn_entity, motor_bridge, ldr_processor, pid_controller, motor_controller]
     launch_items.extend(ldr_bridges)
 
     return LaunchDescription(launch_items)
