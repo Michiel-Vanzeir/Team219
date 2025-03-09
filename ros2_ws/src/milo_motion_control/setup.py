@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+          'motorcontroller = milo_motion_control.motor_controller:main'
         ],
     },
 )
