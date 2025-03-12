@@ -51,7 +51,7 @@ def generate_launch_description():
             "-name", "milo",
             "-topic", "/robot_description",
             "-x", "0",
-            "-y", "0",
+            "-y", "0.1",
             "-z", "1.1",
         ],
         output="screen",
@@ -78,6 +78,12 @@ def generate_launch_description():
         executable='ldr_data_processor'
     )
 
+    # Main controller & decision maker for gridpoint detection, calibration, etc. 
+    main_controller = Node(
+        package='milo_control',
+        executable='maincontroller'
+    )
+
     # PID controller that uses the data from the ldr_processor
     pid_controller = Node(
         package='milo_control',
@@ -96,7 +102,7 @@ def generate_launch_description():
         'use_sim_time',
         default_value='true',
         description='Use sim time if true'
-    ), node_robot_state_publisher, gz_sim, spawn_entity, motor_bridge, ldr_processor, pid_controller, motor_controller]
+    ), node_robot_state_publisher, gz_sim, spawn_entity, motor_bridge, ldr_processor, main_controller, pid_controller, motor_controller]
     launch_items.extend(ldr_bridges)
 
     return LaunchDescription(launch_items)
