@@ -67,6 +67,10 @@ private:
     }
 
     float avg_intensity = total_intensity / (msg->height * msg->width);
+
+    // Rescale avg_intensity (range 0 - 255) to range 1 - 3.3 to mimic LDR voltage readings
+    avg_intensity = 1 + (avg_intensity/255)*2.3;
+
     
     std::string sensor_name = msg->header.frame_id;
     char position = sensor_name[sensor_name.length() - 2];
