@@ -462,7 +462,7 @@
         <noise>
           <type>gaussian</type>
           <mean>0.0</mean>          
-          <stddev>0.05</stddev>    
+          <stddev>0.35</stddev>    
         </noise>
       </camera>
       <topic>milo/fldr1</topic>
@@ -485,7 +485,7 @@
         <noise>
           <type>gaussian</type>
           <mean>0.0</mean>          
-          <stddev>0.05</stddev>    
+          <stddev>0.35</stddev>    
         </noise>
       </camera>
       <topic>milo/fldr2</topic>
@@ -508,7 +508,7 @@
         <noise>
           <type>gaussian</type>
           <mean>0.0</mean>          
-          <stddev>0.05</stddev>    
+          <stddev>0.35</stddev>    
         </noise>
       </camera>
       <topic>milo/bldr1</topic>
@@ -531,7 +531,7 @@
         <noise>
           <type>gaussian</type>
           <mean>0.0</mean>          
-          <stddev>0.05</stddev>    
+          <stddev>0.35</stddev>    
         </noise>
       </camera>
       <topic>milo/bldr2</topic>
@@ -554,7 +554,7 @@
         <noise>
           <type>gaussian</type>
           <mean>0.0</mean>          
-          <stddev>0.05</stddev>    
+          <stddev>0.35</stddev>    
         </noise>
       </camera>
       <topic>milo/lldr1</topic>
@@ -577,7 +577,7 @@
         <noise>
           <type>gaussian</type>
           <mean>0.0</mean>          
-          <stddev>0.05</stddev>    
+          <stddev>0.35</stddev>    
         </noise>
       </camera>
       <topic>milo/rldr1</topic>
@@ -600,7 +600,7 @@
         <noise>
           <type>gaussian</type>
           <mean>0.0</mean>          
-          <stddev>0.05</stddev>    
+          <stddev>0.35</stddev>    
         </noise>
       </camera>
       <topic>milo/lldr2</topic>
@@ -623,7 +623,7 @@
         <noise>
           <type>gaussian</type>
           <mean>0.0</mean>          
-          <stddev>0.05</stddev>    
+          <stddev>0.35</stddev>    
         </noise>
       </camera>
       <topic>milo/rldr2</topic>
