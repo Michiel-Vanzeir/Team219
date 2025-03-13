@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+          'maincontroller = milo_control.main_control:main',
           'pidcontroller = milo_control.PID_controller:main'
         ],
     },
