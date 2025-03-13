@@ -450,7 +450,7 @@
   <gazebo reference="x1_ldr_link">
     <sensor name="f1" type="camera">
       <camera>
-        <horizontal_fov>1.5707</horizontal_fov>
+        <horizontal_fov>1.25</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -473,7 +473,7 @@
   <gazebo reference="x2_ldr_link">
     <sensor name="f0" type="camera">
       <camera>
-        <horizontal_fov>1.5707</horizontal_fov>
+        <horizontal_fov>1.25</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -496,7 +496,7 @@
   <gazebo reference="x-1_ldr_link">
     <sensor name="f2" type="camera">
       <camera>
-        <horizontal_fov>1.5707</horizontal_fov>
+        <horizontal_fov>1.25</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -519,7 +519,7 @@
   <gazebo reference="x-2_ldr_link">
     <sensor name="f3" type="camera">
       <camera>
-        <horizontal_fov>1.5707</horizontal_fov>
+        <horizontal_fov>1.25</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -542,7 +542,7 @@
   <gazebo reference="y1_ldr_link">
     <sensor name="l1" type="camera">
       <camera>
-        <horizontal_fov>1.5707</horizontal_fov>
+        <horizontal_fov>1.25</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -565,7 +565,7 @@
   <gazebo reference="y-1_ldr_link">
     <sensor name="l2" type="camera">
       <camera>
-        <horizontal_fov>1.5707</horizontal_fov>
+        <horizontal_fov>1.25</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -588,7 +588,7 @@
   <gazebo reference="y2_ldr_link">
     <sensor name="l0" type="camera">
       <camera>
-        <horizontal_fov>1.5707</horizontal_fov>
+        <horizontal_fov>1.25</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -611,7 +611,7 @@
   <gazebo reference="y-2_ldr_link">
     <sensor name="l3" type="camera">
       <camera>
-        <horizontal_fov>1.5707</horizontal_fov>
+        <horizontal_fov>1.25</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
