@@ -76,18 +76,21 @@ private:
     std::string index_str = sensor_name.substr(sensor_name.length() - 1);
     int index = std::stoi(index_str);  
 
-    // Store the intensity in the corresponding array (f = forward, l = lateral)
-    if (position == 'f')
-    {
-      forward_ldr_intensities_[index] = avg_intensity;
-    }
-    else if (position == 'l')
-    {
-      lateral_ldr_intensities_[index] = avg_intensity;
-    }
-    else
-    {
-      RCLCPP_WARN(this->get_logger(), "Received data from an invalid LDR: %s", sensor_name.c_str());
+    // Check if the sensor input is valid
+    if (avg_intensity > 1 && avg_intensity < 3.5) {
+      // Store the intensity in the corresponding array (f = forward, l = lateral)
+      if (position == 'f')
+      {
+        forward_ldr_intensities_[index] = avg_intensity;
+      }
+      else if (position == 'l')
+      {
+        lateral_ldr_intensities_[index] = avg_intensity;
+      }
+      else
+      {
+        RCLCPP_WARN(this->get_logger(), "Received data from an invalid LDR: %s", sensor_name.c_str());
+      }
     }
   }
 
