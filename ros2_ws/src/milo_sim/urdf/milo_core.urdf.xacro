@@ -450,7 +450,7 @@
   <gazebo reference="x1_ldr_link">
     <sensor name="f1" type="camera">
       <camera>
-        <horizontal_fov>2.09439510239</horizontal_fov>
+        <horizontal_fov>1.5707</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -459,6 +459,11 @@
           <near>0.001</near>
           <far>0.2</far>
         </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>          
+          <stddev>0.05</stddev>    
+        </noise>
       </camera>
       <topic>milo/fldr1</topic>
       <update_rate>7</update_rate>
@@ -468,7 +473,7 @@
   <gazebo reference="x2_ldr_link">
     <sensor name="f0" type="camera">
       <camera>
-        <horizontal_fov>2.09439510239</horizontal_fov>
+        <horizontal_fov>1.5707</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -477,6 +482,11 @@
           <near>0.001</near>
           <far>0.2</far>
         </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>          
+          <stddev>0.05</stddev>    
+        </noise>
       </camera>
       <topic>milo/fldr2</topic>
       <update_rate>7</update_rate>
@@ -486,7 +496,7 @@
   <gazebo reference="x-1_ldr_link">
     <sensor name="f2" type="camera">
       <camera>
-        <horizontal_fov>2.09439510239</horizontal_fov>
+        <horizontal_fov>1.5707</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -495,6 +505,11 @@
           <near>0.001</near>
           <far>0.2</far>
         </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>          
+          <stddev>0.05</stddev>    
+        </noise>
       </camera>
       <topic>milo/bldr1</topic>
       <update_rate>7</update_rate>
@@ -504,7 +519,7 @@
   <gazebo reference="x-2_ldr_link">
     <sensor name="f3" type="camera">
       <camera>
-        <horizontal_fov>2.09439510239</horizontal_fov>
+        <horizontal_fov>1.5707</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -513,6 +528,11 @@
           <near>0.001</near>
           <far>0.2</far>
         </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>          
+          <stddev>0.05</stddev>    
+        </noise>
       </camera>
       <topic>milo/bldr2</topic>
       <update_rate>7</update_rate>
@@ -522,7 +542,7 @@
   <gazebo reference="y1_ldr_link">
     <sensor name="l1" type="camera">
       <camera>
-        <horizontal_fov>2.09439510239</horizontal_fov>
+        <horizontal_fov>1.5707</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -531,6 +551,11 @@
           <near>0.001</near>
           <far>0.2</far>
         </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>          
+          <stddev>0.05</stddev>    
+        </noise>
       </camera>
       <topic>milo/lldr1</topic>
       <update_rate>7</update_rate>
@@ -540,7 +565,7 @@
   <gazebo reference="y-1_ldr_link">
     <sensor name="l2" type="camera">
       <camera>
-        <horizontal_fov>2.09439510239</horizontal_fov>
+        <horizontal_fov>1.5707</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -549,6 +574,11 @@
           <near>0.001</near>
           <far>0.2</far>
         </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>          
+          <stddev>0.05</stddev>    
+        </noise>
       </camera>
       <topic>milo/rldr1</topic>
       <update_rate>7</update_rate>
@@ -558,7 +588,7 @@
   <gazebo reference="y2_ldr_link">
     <sensor name="l0" type="camera">
       <camera>
-        <horizontal_fov>2.09439510239</horizontal_fov>
+        <horizontal_fov>1.5707</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -567,6 +597,11 @@
           <near>0.001</near>
           <far>0.2</far>
         </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>          
+          <stddev>0.05</stddev>    
+        </noise>
       </camera>
       <topic>milo/lldr2</topic>
       <update_rate>7</update_rate>
@@ -576,7 +611,7 @@
   <gazebo reference="y-2_ldr_link">
     <sensor name="l3" type="camera">
       <camera>
-        <horizontal_fov>2.09439510239</horizontal_fov>
+        <horizontal_fov>1.5707</horizontal_fov>
         <image>
           <width>10</width>
           <height>8</height>
@@ -585,6 +620,11 @@
           <near>0.001</near>
           <far>0.2</far>
         </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>          
+          <stddev>0.05</stddev>    
+        </noise>
       </camera>
       <topic>milo/rldr2</topic>
       <update_rate>7</update_rate>
