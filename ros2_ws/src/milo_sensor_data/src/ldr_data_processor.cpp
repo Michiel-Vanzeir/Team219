@@ -77,7 +77,7 @@ private:
     int index = std::stoi(index_str);  
 
     // Check if the sensor input is valid
-    if (avg_intensity > 1 && avg_intensity < 3.5) {
+    if (avg_intensity >= 1.0 && avg_intensity <= 3.5) {
       // Store the intensity in the corresponding array (f = forward, l = lateral)
       if (position == 'f')
       {
