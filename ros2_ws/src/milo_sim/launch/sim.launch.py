@@ -15,7 +15,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
 
     # Get the urdf/xacro file path
-    path_to_urdf = get_package_share_path(package_name) / 'urdf' / 'milo.urdf.xacro'
+    path_to_urdf = get_package_share_path(package_name) / 'urdf' / 'milo_circular.urdf.xacro'
     
     # Create a robot_state_publisher node
     node_robot_state_publisher = Node(
@@ -58,7 +58,7 @@ def generate_launch_description():
     )
 
     # LDR data topics
-    ldr_topics = ['/milo/fldr1','/milo/fldr2','/milo/bldr1','/milo/bldr2','/milo/lldr1','/milo/lldr2','/milo/rldr1','/milo/rldr2']
+    ldr_topics = ['/milo/ldr1','/milo/ldr2','/milo/ldr3','/milo/ldr4','/milo/ldr5','/milo/ldr6','/milo/ldr7','/milo/ldr8']
     # ROS-Gazebo bridge for LDR sensor data
     ldr_bridges = [Node(
         package='ros_gz_bridge', 
@@ -102,7 +102,7 @@ def generate_launch_description():
         'use_sim_time',
         default_value='true',
         description='Use sim time if true'
-    ), node_robot_state_publisher, gz_sim, spawn_entity, motor_bridge, ldr_processor, main_controller, pid_controller, motor_controller]
+    ), node_robot_state_publisher, gz_sim, spawn_entity, motor_bridge, ldr_processor, main_controller]
     launch_items.extend(ldr_bridges)
 
     return LaunchDescription(launch_items)

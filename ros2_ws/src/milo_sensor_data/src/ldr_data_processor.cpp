@@ -12,14 +12,14 @@ public:
   {
     // All Gazebo LDR topics
     std::vector<std::string> ldr_topics = {
-        "/milo/fldr1",
-        "/milo/fldr2",
-        "/milo/bldr1",
-        "/milo/bldr2",
-        "/milo/lldr1",
-        "/milo/lldr2",
-        "/milo/rldr1",
-        "/milo/rldr2"};
+        "/milo/ldr1",
+        "/milo/ldr2",
+        "/milo/ldr3",
+        "/milo/ldr4",
+        "/milo/ldr5",
+        "/milo/ldr6",
+        "/milo/ldr7",
+        "/milo/ldr8"};
 
     // Initialize the ldr subscribers
     for (const auto &topic : ldr_topics)
@@ -43,8 +43,7 @@ private:
   std::vector<rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr> subscriptions_;
   rclcpp::Service<milo_communication::srv::LdrData>::SharedPtr service_;
 
-  std::array<float, 4> forward_ldr_intensities_;
-  std::array<float, 4> lateral_ldr_intensities_;
+  std::array<float, 8> ldr_readings_;
 
   void ldr_callback(const sensor_msgs::msg::Image::SharedPtr msg)
   {
@@ -72,25 +71,13 @@ private:
     avg_intensity = 1.2 + (avg_intensity/130)*2.1;
     
     std::string sensor_name = msg->header.frame_id;
-    char position = sensor_name[sensor_name.length() - 2];
     std::string index_str = sensor_name.substr(sensor_name.length() - 1);
     int index = std::stoi(index_str);  
 
     // Check if the sensor input is valid
     if (avg_intensity >= 1.0 && avg_intensity <= 3.5) {
       // Store the intensity in the corresponding array (f = forward, l = lateral)
-      if (position == 'f')
-      {
-        forward_ldr_intensities_[index] = avg_intensity;
-      }
-      else if (position == 'l')
-      {
-        lateral_ldr_intensities_[index] = avg_intensity;
-      }
-      else
-      {
-        RCLCPP_WARN(this->get_logger(), "Received data from an invalid LDR: %s", sensor_name.c_str());
-      }
+      ldr_readings_[index] = avg_intensity;
     } 
   }
 
@@ -101,8 +88,7 @@ private:
     (void)request;
 
     // Now the types match perfectly
-    response->forward_ldr_intensities = forward_ldr_intensities_;
-    response->lateral_ldr_intensities = lateral_ldr_intensities_;
+    response->ldr_readings = ldr_readings_;
   }
 };
 
