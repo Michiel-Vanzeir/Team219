@@ -609,8 +609,8 @@
       <surface>
         <friction>
           <ode>
-            <mu>1.5</mu>
-            <mu2>0.0</mu2>
+            <mu>0.8</mu>
+            <mu2>0.5</mu2>
             <fdir1 gz:expressed_in="base_link">1 -1 0</fdir1>
           </ode>
         </friction>
@@ -623,8 +623,8 @@
       <surface>
         <friction>
           <ode>
-            <mu>1.5</mu>
-            <mu2>0.0</mu2>
+            <mu>0.8</mu>
+            <mu2>0.5</mu2>
             <fdir1 gz:expressed_in="base_link">1 1 0</fdir1>
           </ode>
         </friction>
@@ -637,8 +637,8 @@
       <surface>
         <friction>
           <ode>
-            <mu>1.5</mu>
-            <mu2>0.0</mu2>
+            <mu>0.8</mu>
+            <mu2>0.5</mu2>
             <fdir1 gz:expressed_in="base_link">1 1 0</fdir1>
           </ode>
         </friction>
@@ -651,8 +651,8 @@
       <surface>
         <friction>
           <ode>
-            <mu>1.5</mu>
-            <mu2>0.0</mu2>
+            <mu>0.8</mu>
+            <mu2>0.5</mu2>
             <fdir1 gz:expressed_in="base_link">1 -1 0</fdir1>
           </ode>
         </friction>

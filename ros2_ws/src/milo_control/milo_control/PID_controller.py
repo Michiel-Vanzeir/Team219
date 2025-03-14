@@ -1,57 +1,56 @@
-from milo_communication.srv import LdrData
 from std_msgs.msg import Float32
-import time
 import rclpy
 from rclpy.node import Node
 
-class PIDClientAsync(Node):
+class PIDController:
+    def __init__(self, Kp=0, Kd=0, Ki=0):
+        self.Kp = Kp
+        self.Kd = Kd
+        self.Ki = Ki
+
+        # For derivative gain
+        self.previous_error = 0
+
+        # For integral gain
+        self.cumulative_error = 0
+
+    def calculate(self, error):
+        derivative_gain = error - self.previous_error
+
+        # Update controller state
+        self.previous_error = error
+        self.cumulative_error += error
+
+        return self.Kp * error + self.Kd * derivative_gain + self.Ki * self.cumulative_error
+
+class PIDNode(Node):
 
     def __init__(self):
-        super().__init__('pid_client')  # Node name
-        self.cli = self.create_client(LdrData, '/get_ldr_readings')
+        super().__init__('pid_node')  # Node name
+        self.subscription = self.create_subscription(
+            Float32, '/PID_input', self.input_callback, 2)
         self.publisher = self.create_publisher(Float32, '/PID_output', 2)
-        while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('Service not available, waiting again...')
-        
 
-        self.req = LdrData.Request()
+        # PID Controller
+        self.pid_controller = PIDController(Kp=0.0025, Kd=0.0007, Ki=0)
 
-        # Wait five seconds for ROS to initialize everything (prevents 0.0 readings from service)
-        time.sleep(5)
+    def input_callback(self, msg):
+        position_error = msg.data
 
-        # Timer to send request every 200ms
-        self.timer = self.create_timer(1, self.send_request)
+        # Calculate PID output
+        pid_output = self.pid_controller.calculate(position_error)
 
-    # Make a service request (asynchronously)
-    def send_request(self):
-        future = self.cli.call_async(self.req)
-        future.add_done_callback(self.handle_response)
-
-    def handle_response(self, future):
-        try:
-            response = future.result()
-
-            # Log the LDR intensities
-            self.get_logger().info(
-                f"Lateral LDR intensities: {response.lateral_ldr_intensities[0]:.2f}, "
-                f"{response.lateral_ldr_intensities[1]:.2f}, "
-                f"{response.lateral_ldr_intensities[2]:.2f}, "
-                f"{response.lateral_ldr_intensities[3]:.2f}")
-            
-            msg = Float32()
-            msg.data = 3.14 # Temporary test value
-            self.publisher.publish(msg)
-
-        except Exception as e:
-            self.get_logger().error(f"Service call failed: {e}")
+        # Publish PID output
+        output_msg = Float32()
+        output_msg.data = pid_output
+        self.publisher.publish(output_msg)
 
 def main():
     rclpy.init()
-    pid_client = PIDClientAsync()
-    rclpy.spin(pid_client)
-    pid_client.destroy_node()
+    pid_node = PIDNode()
+    rclpy.spin(pid_node)
+    pid_node.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()

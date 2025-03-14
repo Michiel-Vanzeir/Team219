@@ -91,7 +91,7 @@ private:
       {
         RCLCPP_WARN(this->get_logger(), "Received data from an invalid LDR: %s", sensor_name.c_str());
       }
-    }
+    } 
   }
 
   void send_ldr_readings(

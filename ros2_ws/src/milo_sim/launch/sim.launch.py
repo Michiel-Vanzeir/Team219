@@ -51,8 +51,8 @@ def generate_launch_description():
             "-name", "milo",
             "-topic", "/robot_description",
             "-x", "0",
-            "-y", "0.1",
-            "-z", "1.1",
+            "-y", "0.15",
+            "-z", "0.3",
         ],
         output="screen",
     )

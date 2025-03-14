@@ -12,14 +12,13 @@ class MotorController(Node):
         self.subscription = self.create_subscription(Float32, '/PID_output', self.pid_callback, 2)
         self.subscription  # prevent unused variable warning
 
-        self.publisher = self.create_publisher(Twist, '/model/milo/cmd_vel', 2)
+        self.gzmotorpub = self.create_publisher(Twist, '/model/milo/cmd_vel', 2)
 
     def pid_callback(self, msg):
-        self.get_logger().info('I heard: "%s"' % msg.data)
-
-        msg = Twist()
-        msg.linear.x = 0.5
-        self.publisher.publish(msg)
+        motoroutput = Twist()
+        motoroutput.linear.x = 0.05
+        motoroutput.linear.y = msg.data
+        self.gzmotorpub.publish(motoroutput)
 
 def main(args=None):
     rclpy.init(args=args)
