@@ -1,4 +1,4 @@
-from std_msgs.msg import Float32
+from milo_communication.msg import PIDInput, PIDOutput
 import rclpy
 from rclpy.node import Node
 
@@ -28,22 +28,19 @@ class PIDNode(Node):
     def __init__(self):
         super().__init__('pid_node')  # Node name
         self.subscription = self.create_subscription(
-            Float32, '/PID_input', self.input_callback, 2)
-        self.publisher = self.create_publisher(Float32, '/PID_output', 2)
+            PIDInput, '/PID_input', self.input_callback, 2)
+        self.outputpub = self.create_publisher(PIDOutput, '/PID_output', 2)
 
         # PID Controller
-        self.pid_controller = PIDController(Kp=0.0025, Kd=0.0007, Ki=0)
+        self.position_pid_controller = PIDController(Kp=0.0025, Kd=0.0007, Ki=0)
+        self.angle_pid_controller = PIDController(Kp=0.025, Kd=0.0, Ki=0.0)
 
     def input_callback(self, msg):
-        position_error = msg.data
-
-        # Calculate PID output
-        pid_output = self.pid_controller.calculate(position_error)
-
         # Publish PID output
-        output_msg = Float32()
-        output_msg.data = pid_output
-        self.publisher.publish(output_msg)
+        output_msg = PIDOutput()
+        output_msg.position_correction = self.position_pid_controller.calculate(msg.position_error)
+        output_msg.orientation_correction = self.angle_pid_controller.calculate(msg.angle_error)
+        self.outputpub.publish(output_msg)
 
 def main():
     rclpy.init()

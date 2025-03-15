@@ -14,6 +14,8 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/LdrData.srv"
+  "msg/PIDInput.msg"
+  "msg/PIDOutput.msg"
   DEPENDENCIES # No dependencies
 )
 
