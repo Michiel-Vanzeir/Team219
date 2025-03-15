@@ -32,8 +32,8 @@ class PIDNode(Node):
         self.outputpub = self.create_publisher(PIDOutput, '/PID_output', 2)
 
         # PID Controller
-        self.position_pid_controller = PIDController(Kp=0.0025, Kd=0.0007, Ki=0)
-        self.angle_pid_controller = PIDController(Kp=0.025, Kd=0.0, Ki=0.0)
+        self.position_pid_controller = PIDController(Kp=0.01, Kd=0.0007, Ki=0)
+        self.angle_pid_controller = PIDController(Kp=0.1, Kd=0.04, Ki=0.0)
 
     def input_callback(self, msg):
         # Publish PID output

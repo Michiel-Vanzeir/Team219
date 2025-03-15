@@ -7,6 +7,7 @@ from rclpy.node import Node
 from milo_communication.srv import LdrData
 from milo_communication.msg import PIDInput
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Float32
 
 class MainController(Node):
     def __init__(self):
@@ -14,14 +15,13 @@ class MainController(Node):
         self.client = self.create_client(LdrData, '/get_ldr_readings')
         self.pidpub = self.create_publisher(PIDInput, '/PID_input', 2)
         self.motorpub = self.create_publisher(Twist, '/model/milo/cmd_vel', 2)
+        self.velocitypub = self.create_publisher(Float32, '/velocity', 2)
         
         while not self.client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('LDR readings service not available, waiting...')
 
         self.request = LdrData.Request()
 
-        # Set driving mode (FORWARD, LATERAL, TURNING)
-        self.MODE = "FORWARD"
         self.near_intersection = False
 
         # Necessary LDR parameters
@@ -32,7 +32,7 @@ class MainController(Node):
         self.ldr_distances_y = [3.5, 2.47, 0.0, -2.47, -3.5, -2.47, 0, 2.47]
         self.sensor_angles = [i * (math.pi/4) for i in range(8)]
         self.ldr_circle_radius = 3.5
-        self.ldr_turning_indices = [0, 2, 4, 6] # LDRs that need to be black to have turned 90 degrees
+        self.MODE = "FORWARD"
 
         # Wait for ROS to initialize
         time.sleep(10)
@@ -42,19 +42,20 @@ class MainController(Node):
 
     # Detects whether the robot is on a grid intersection based on the amount of LDRs over a black line
     def onIntersection(self, ldr_readings):
-        return sum(ldr_readings[index] < self.threshold for index in self.ldr_turning_indices) == 4
+        return sum(reading < self.threshold for reading in ldr_readings) >= 4
 
-    def nearIntersection(self, ldr_readings):
-        return sum(ldr_readings[index] < self.threshold for index in [3, 5])
+    def nearIntersection(self, intersection_ldr_readings):
+        return intersection_ldr_readings[1] < self.threshold and intersection_ldr_readings[0] > self.threshold
 
     def turnRight(self):
         motor_cmd = Twist()
-        motor_cmd.angular.z = -0.8
+        motor_cmd.angular.z = -10.0
         self.motorpub.publish(motor_cmd)
-        time.sleep(2)
 
     def stop(self):
-        self.motorpub.publish(Twist()) # All velocities are zero by default
+        msg = Twist()
+        msg.angular.z = 0.0
+        self.motorpub.publish(msg) # All velocities are zero by default
 
     def driveForwards(self, duration, velocity: float):
         motor_cmd = Twist()
@@ -152,7 +153,8 @@ class MainController(Node):
         self.get_logger().debug(f" {activations[6]}         {activations[2]} ")
         self.get_logger().debug(f"   {activations[5]}     {activations[3]}   ")
         self.get_logger().debug(f"      {activations[4]}      ")
-        return angle
+        
+        return angle if abs(angle) < 70.0 else 0.0
 
     def sendPIDInput(self, line_deviation, line_angle):
         pid_input = PIDInput()
@@ -160,31 +162,45 @@ class MainController(Node):
         pid_input.angle_error = line_angle
         self.pidpub.publish(pid_input)
 
+    def changeVelocity(self, velocity: float):
+        velocity_msg = Float32()
+        velocity_msg.data = velocity
+        self.velocitypub.publish(velocity_msg)
+
     def main_control_loop(self, ldr_data):
-        readings = ldr_data.ldr_readings
+        regular_readings = ldr_data.ldr_readings[0:8]
+        intersection_readings = ldr_data.ldr_readings[8:10]
 
+        # Check if the turn is completed
         if self.MODE == "TURNING":
-            if self.onIntersection(readings):
+            if regular_readings[4] < self.threshold:
                 self.stop()
-                self.driveForwards(velocity=0.1, duration=1)
                 self.MODE = "FORWARD"
+                self.get_logger().info("CONTINUING JOURNEY")
+                self.stop()
+                self.changeVelocity(0.3)
+                self.driveForwards(5, 0.3)
                 self.near_intersection = False
-                self.get_logger().info("AWAY FROM INTERSECTION")
-        elif self.onIntersection(readings):
-            self.turnRight()
-            self.MODE = "TURNING"
-            self.get_logger().info("TURNING")
-        elif self.near_intersection:
-            line_deviation = self.calculateLineDeviation(readings)
-            self.sendPIDInput(line_deviation, 0.0)
         else:
-            line_deviation = self.calculateLineDeviation(readings)
-            line_angle = self.calculateLineAngle(readings)
-            self.sendPIDInput(line_deviation, line_angle)
+            if self.onIntersection(regular_readings) and self.near_intersection:
+                self.turnRight()
+                self.get_logger().info("TURNING")
+                time.sleep(2)
+                self.MODE = "TURNING"
+            elif self.nearIntersection(intersection_readings):
+                self.changeVelocity(0.05)
+                self.get_logger().info("Slowing down...")
+                self.near_intersection = True
+            else:
+                line_deviation = self.calculateLineDeviation(regular_readings)
+                line_angle = self.calculateLineAngle(regular_readings)
+                self.sendPIDInput(line_deviation, line_angle)
+            
 
-            self.near_intersection = self.nearIntersection(readings)
-            if self.near_intersection:
-                self.get_logger().info("NEAR INTERSECTION")
+                # self.near_intersection = self.nearIntersection(readings)
+                # if self.near_intersection:
+                #     self.changeVelocity(0.05)
+                #     self.get_logger().info("NEAR INTERSECTION")
 
 
 
@@ -203,7 +219,7 @@ def main():
                 main_controller.main_control_loop(response)
             else:
                 main_controller.get_logger().warn("Received empty sensor data")
-            time.sleep(0.25)  # Client request Hz 
+            time.sleep(0.1)  # Client request Hz 
     except KeyboardInterrupt:
         main_controller.get_logger().info("KeyboardInterrupt, shutting down.")
     finally:

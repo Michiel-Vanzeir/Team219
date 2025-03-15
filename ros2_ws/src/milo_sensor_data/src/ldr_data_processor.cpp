@@ -19,7 +19,10 @@ public:
         "/milo/ldr5",
         "/milo/ldr6",
         "/milo/ldr7",
-        "/milo/ldr8"};
+        "/milo/ldr8",
+        "/milo/ldr9",
+        "/milo/ldr10"
+      };
 
     // Initialize the ldr subscribers
     for (const auto &topic : ldr_topics)
@@ -43,7 +46,7 @@ private:
   std::vector<rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr> subscriptions_;
   rclcpp::Service<milo_communication::srv::LdrData>::SharedPtr service_;
 
-  std::array<float, 8> ldr_readings_;
+  std::array<float, 10> ldr_readings_;
 
   void ldr_callback(const sensor_msgs::msg::Image::SharedPtr msg)
   {

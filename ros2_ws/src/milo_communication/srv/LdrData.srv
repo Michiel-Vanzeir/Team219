@@ -1,4 +1,4 @@
 # No request data
 ---
 # Response data
-float32[8] ldr_readings
+float32[10] ldr_readings
