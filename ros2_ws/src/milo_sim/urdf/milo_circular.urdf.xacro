@@ -14,7 +14,6 @@
   <xacro:property name="wheel_axis_offset_z" value="0.01" />
   <xacro:property name="wheel_radius" value="0.03" />
   <xacro:property name="wheel_thickness" value="0.025" />
-  <xacro:property name="ldr_inter_offset" value="0.025" />
   <xacro:property name="ldr_height" value="0.005" />
   <xacro:property name="ldr_radius" value="0.035"/>
 
@@ -68,7 +67,6 @@
     <origin xyz="${wheel_axis_offset_x} ${chassis_width/2 + wheel_thickness} ${wheel_axis_offset_z}" rpy="${-pi/2} 0 0" />
     <axis xyz="0.0 0.0 -1.0" />
     <limit effort="10000" velocity="10"/>
-    <dynamics damping="1.0" friction="1.0"/>
   </joint>
 
   <link name="BR_wheel_link">
@@ -97,7 +95,6 @@
       rpy="${pi/2} 0 0" />
     <axis xyz="0.0 0.0 1.0" />
     <limit effort="10000" velocity="10"/>
-    <dynamics damping="1.0" friction="1.0"/>
   </joint>
 
   <link name="BL_wheel_link">
@@ -126,7 +123,6 @@
       rpy="${pi/2} 0 0" />
     <axis xyz="0.0 0.0 1.0" />
     <limit effort="10000" velocity="10"/>
-    <dynamics damping="1.0" friction="1.0"/>
   </joint>
 
   <link name="FL_wheel_link">
@@ -155,7 +151,6 @@
       rpy="${-pi/2} 0 0" />
     <axis xyz="0.0 0.0 -1.0" />
     <limit effort="10000" velocity="10"/>
-    <dynamics damping="1.0" friction="1.0"/>
   </joint>
 
   <link name="FR_wheel_link">
@@ -206,17 +201,17 @@
     </link>
   </xacro:macro>
 
-  <xacro:ldr_joint_and_link name="ldr1" angle="0" radius="${ldr_radius}"/>
-  <xacro:ldr_joint_and_link name="ldr2" angle="${pi/4}" radius="${ldr_radius}"/>
-  <xacro:ldr_joint_and_link name="ldr3" angle="${pi/2}" radius="${ldr_radius}"/>
-  <xacro:ldr_joint_and_link name="ldr4" angle="${3*pi/4}" radius="${ldr_radius}"/>
-  <xacro:ldr_joint_and_link name="ldr5" angle="${pi}" radius="${ldr_radius}"/>
-  <xacro:ldr_joint_and_link name="ldr6" angle="${5*pi/4}" radius="${ldr_radius}"/>
-  <xacro:ldr_joint_and_link name="ldr7" angle="${3*pi/2}" radius="${ldr_radius}"/>
-  <xacro:ldr_joint_and_link name="ldr8" angle="${7*pi/4}" radius="${ldr_radius}"/>
+  <xacro:ldr_joint_and_link name="ldr1" angle="${pi}" radius="${ldr_radius}"/>
+  <xacro:ldr_joint_and_link name="ldr2" angle="${5*pi/4}" radius="${ldr_radius}"/>
+  <xacro:ldr_joint_and_link name="ldr3" angle="${3*pi/2}" radius="${ldr_radius}"/>
+  <xacro:ldr_joint_and_link name="ldr4" angle="${7*pi/4}" radius="${ldr_radius}"/>
+  <xacro:ldr_joint_and_link name="ldr5" angle="0" radius="${ldr_radius}"/>
+  <xacro:ldr_joint_and_link name="ldr6" angle="${pi/4}" radius="${ldr_radius}"/>
+  <xacro:ldr_joint_and_link name="ldr7" angle="${pi/2}" radius="${ldr_radius}"/>
+  <xacro:ldr_joint_and_link name="ldr8" angle="${3*pi/4}" radius="${ldr_radius}"/>
 
-  <xacro:ldr_joint_and_link name="ldr9" angle="${pi/4}" radius="0.10"/>
-  <xacro:ldr_joint_and_link name="ldr10" angle="${5*pi/4}" radius="0.10"/>
+  <!-- <xacro:ldr_joint_and_link name="ldr9" angle="${5*pi/4}" radius="0.16"/>
+  <xacro:ldr_joint_and_link name="ldr10" angle="${pi/4}" radius="0.16"/> -->
   
 
   <!-- GAZEBO information -->
@@ -241,8 +236,8 @@
       <camera>
         <horizontal_fov>1.25</horizontal_fov>
         <image>
-          <width>10</width>
-          <height>8</height>
+          <width>6</width>
+          <height>6</height>
         </image>
         <clip> <!-- The range of the camera-->
           <near>0.001</near>
@@ -255,7 +250,7 @@
         </noise>
       </camera>
       <topic>milo/ldr1</topic>
-      <update_rate>7</update_rate>
+      <update_rate>30</update_rate>
     </sensor>
   </gazebo>
 
@@ -264,8 +259,8 @@
       <camera>
         <horizontal_fov>1.25</horizontal_fov>
         <image>
-          <width>10</width>
-          <height>8</height>
+          <width>6</width>
+          <height>6</height>
         </image>
         <clip> <!-- The range of the camera-->
           <near>0.001</near>
@@ -278,7 +273,7 @@
         </noise>
       </camera>
       <topic>milo/ldr2</topic>
-      <update_rate>7</update_rate>
+      <update_rate>30</update_rate>
     </sensor>
   </gazebo>
 
@@ -287,8 +282,8 @@
       <camera>
         <horizontal_fov>1.25</horizontal_fov>
         <image>
-          <width>10</width>
-          <height>8</height>
+          <width>6</width>
+          <height>6</height>
         </image>
         <clip> <!-- The range of the camera-->
           <near>0.001</near>
@@ -301,7 +296,7 @@
         </noise>
       </camera>
       <topic>milo/ldr3</topic>
-      <update_rate>7</update_rate>
+      <update_rate>30</update_rate>
     </sensor>
   </gazebo>
 
@@ -310,8 +305,8 @@
       <camera>
         <horizontal_fov>1.25</horizontal_fov>
         <image>
-          <width>10</width>
-          <height>8</height>
+          <width>6</width>
+          <height>6</height>
         </image>
         <clip> <!-- The range of the camera-->
           <near>0.001</near>
@@ -324,7 +319,7 @@
         </noise>
       </camera>
       <topic>milo/ldr4</topic>
-      <update_rate>7</update_rate>
+      <update_rate>30</update_rate>
     </sensor>
   </gazebo>
 
@@ -333,8 +328,8 @@
       <camera>
         <horizontal_fov>1.25</horizontal_fov>
         <image>
-          <width>10</width>
-          <height>8</height>
+          <width>6</width>
+          <height>6</height>
         </image>
         <clip> <!-- The range of the camera-->
           <near>0.001</near>
@@ -347,7 +342,7 @@
         </noise>
       </camera>
       <topic>milo/ldr5</topic>
-      <update_rate>7</update_rate>
+      <update_rate>30</update_rate>
     </sensor>
   </gazebo>
 
@@ -356,8 +351,8 @@
       <camera>
         <horizontal_fov>1.25</horizontal_fov>
         <image>
-          <width>10</width>
-          <height>8</height>
+          <width>6</width>
+          <height>6</height>
         </image>
         <clip> <!-- The range of the camera-->
           <near>0.001</near>
@@ -370,7 +365,7 @@
         </noise>
       </camera>
       <topic>milo/ldr6</topic>
-      <update_rate>7</update_rate>
+      <update_rate>30</update_rate>
     </sensor>
   </gazebo>
 
@@ -379,8 +374,8 @@
       <camera>
         <horizontal_fov>1.25</horizontal_fov>
         <image>
-          <width>10</width>
-          <height>8</height>
+          <width>6</width>
+          <height>6</height>
         </image>
         <clip> <!-- The range of the camera-->
           <near>0.001</near>
@@ -393,7 +388,7 @@
         </noise>
       </camera>
       <topic>milo/ldr7</topic>
-      <update_rate>7</update_rate>
+      <update_rate>30</update_rate>
     </sensor>
   </gazebo>
 
@@ -402,8 +397,8 @@
       <camera>
         <horizontal_fov>1.25</horizontal_fov>
         <image>
-          <width>10</width>
-          <height>8</height>
+          <width>6</width>
+          <height>6</height>
         </image>
         <clip> <!-- The range of the camera-->
           <near>0.001</near>
@@ -416,19 +411,19 @@
         </noise>
       </camera>
       <topic>milo/ldr8</topic>
-      <update_rate>7</update_rate>
+      <update_rate>30</update_rate>
     </sensor>
   </gazebo>
 
-  <gazebo reference="ldr9_link">
+  <!-- <gazebo reference="ldr9_link">
     <sensor name="8" type="camera">
       <camera>
         <horizontal_fov>1.25</horizontal_fov>
         <image>
-          <width>10</width>
-          <height>8</height>
+          <width>6</width>
+          <height>6</height>
         </image>
-        <clip> <!-- The range of the camera-->
+        <clip>  
           <near>0.001</near>
           <far>0.2</far>
         </clip>
@@ -439,7 +434,7 @@
         </noise>
       </camera>
       <topic>milo/ldr9</topic>
-      <update_rate>7</update_rate>
+      <update_rate>30</update_rate>
     </sensor>
   </gazebo>
 
@@ -448,10 +443,10 @@
       <camera>
         <horizontal_fov>1.25</horizontal_fov>
         <image>
-          <width>10</width>
-          <height>8</height>
+          <width>6</width>
+          <height>6</height>
         </image>
-        <clip> <!-- The range of the camera-->
+        <clip> 
           <near>0.001</near>
           <far>0.2</far>
         </clip>
@@ -462,9 +457,9 @@
         </noise>
       </camera>
       <topic>milo/ldr10</topic>
-      <update_rate>7</update_rate>
+      <update_rate>30</update_rate>
     </sensor>
-  </gazebo>
+  </gazebo> -->
 
   <!-- STEP 6 - Gazebo frictions and colors -->
   <gazebo reference='FL_wheel_link'>

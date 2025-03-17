@@ -15,7 +15,6 @@ class MotorController(Node):
         self.subscription  # prevent unused variable warning
 
         self.gzmotorpub = self.create_publisher(Twist, '/model/milo/cmd_vel', 2)
-        self.slow_down = False
         self.linear_velocity = 0.30
 
     def velocity_callback(self, msg):

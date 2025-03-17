@@ -1,7 +1,6 @@
 import threading
 import time
 import math
-import numpy as np
 import rclpy
 from rclpy.node import Node
 from milo_communication.srv import LdrData
@@ -24,48 +23,64 @@ class MainController(Node):
 
         self.near_intersection = False
 
-        # Necessary LDR parameters
+        # Necessary calibration parameters
         self.max_ldr_reading = 3.3
         self.min_ldr_reading = 1.95
-        self.threshold = (self.max_ldr_reading + self.min_ldr_reading) / 2
+        self.threshold = (self.max_ldr_reading + self.min_ldr_reading) / 2 # Will change after calibration phase
+
+        # Angle and line correction parameters
         self.ldr_distances_x = [0.0, 2.47, 3.5, 2.47, 0.0, -2.47, -3.5, -2.47]
         self.ldr_distances_y = [3.5, 2.47, 0.0, -2.47, -3.5, -2.47, 0, 2.47]
         self.sensor_angles = [i * (math.pi/4) for i in range(8)]
+        self.front_ldrs_indices = [0, 1, 7]
         self.ldr_circle_radius = 3.5
-        self.MODE = "FORWARD"
 
         # Wait for ROS to initialize
-        time.sleep(10)
+        time.sleep(8)
+
+        # self.get_logger().info("STARTING CALIBRATION")
+        # self.calibrateLDRs(number_of_measurements=30)
+        # self.get_logger().info("CALIBRATED")
+        # self.get_logger().info(f"Threshold: {self.threshold}")
 
     def send_request(self):
         return self.client.call(self.request)
 
-    # Detects whether the robot is on a grid intersection based on the amount of LDRs over a black line
     def onIntersection(self, ldr_readings):
-        return sum(reading < self.threshold for reading in ldr_readings) >= 4
-
-    def nearIntersection(self, intersection_ldr_readings):
-        return intersection_ldr_readings[1] < self.threshold and intersection_ldr_readings[0] > self.threshold
+        return  all(ldr_readings[index] < self.threshold for index in self.front_ldrs_indices)
+    
+    def nearIntersection(self, ldr_readings):
+        return sum([reading < self.threshold for reading in ldr_readings]) <= 2
 
     def turnRight(self):
         motor_cmd = Twist()
-        motor_cmd.angular.z = -10.0
+        motor_cmd.angular.z = -5.0
         self.motorpub.publish(motor_cmd)
+        
+        # Timer to make sure the ldr is off the line
+        time.sleep(2.5)
+
+        while True:
+            front_ldr_reading = self.send_request().ldr_readings[0]
+            if front_ldr_reading < self.threshold:  # Front LDR sees black
+                self.get_logger().info("STOP")
+                break
+            time.sleep(0.01)
+
+        self.stop()
 
     def stop(self):
-        msg = Twist()
-        msg.angular.z = 0.0
-        self.motorpub.publish(msg) # All velocities are zero by default
+        self.motorpub.publish(Twist())
 
     def driveForwards(self, duration, velocity: float):
         motor_cmd = Twist()
         motor_cmd.linear.x = velocity
         self.motorpub.publish(motor_cmd)
 
-        time.sleep(duration)
+        # time.sleep(duration)
 
-        motor_cmd.linear.x = 0.0
-        self.motorpub.publish(motor_cmd)
+        # motor_cmd.linear.x = 0.0
+        # self.motorpub.publish(motor_cmd)
 
     # Calculates the deviation from the line using a weighted average
     def calculateLineDeviation(self, ldr_readings):
@@ -167,34 +182,75 @@ class MainController(Node):
         velocity_msg.data = velocity
         self.velocitypub.publish(velocity_msg)
 
-    def main_control_loop(self, ldr_data):
-        regular_readings = ldr_data.ldr_readings[0:8]
-        intersection_readings = ldr_data.ldr_readings[8:10]
+    def calibrateLDRs(self, number_of_measurements: int):
+        for measurement in range(number_of_measurements):
+            self.get_logger().info("SENDING REQUEST")
+            ldr_readings = self.send_request().ldr_readings[0:8]
+            self.get_logger().info("RECEIVED READINGS")
+            for reading in ldr_readings:
+                if reading < self.min_ldr_reading:
+                    self.min_ldr_reading = reading
+                elif reading > self.max_ldr_reading:
+                    self.max_ldr_reading = reading
 
-        # Check if the turn is completed
-        if self.MODE == "TURNING":
-            if regular_readings[4] < self.threshold:
-                self.stop()
-                self.MODE = "FORWARD"
-                self.get_logger().info("CONTINUING JOURNEY")
-                self.stop()
-                self.changeVelocity(0.3)
-                self.driveForwards(5, 0.3)
-                self.near_intersection = False
+    # self.threshold = (self.min_ldr_reading + self.max_ldr_reading / 2)
+
+    def main_control_loop(self, ldr_data):
+        readings = ldr_data.ldr_readings[0:8]
+
+        # Are you on an intersection?
+        # => front three LDRs are activated
+        # => more than 5-6 LDR are activated
+        # => 4 specific LDRs are activated
+            # yes => turn
+                # Until (front or right)? ldr is activated 
+            # no => PID + angle correction
+                # Calculate line deviation and angle => PID input
+    
+        #self.get_logger().info(f"Readings: {readings[0]}")
+        if self.onIntersection(readings) and not self.near_intersection:
+            self.get_logger().info("TURNING")
+            self.turnRight()
+            self.near_intersection = True
+            self.get_logger().info("TURNED")
         else:
-            if self.onIntersection(regular_readings) and self.near_intersection:
-                self.turnRight()
-                self.get_logger().info("TURNING")
-                time.sleep(2)
-                self.MODE = "TURNING"
-            elif self.nearIntersection(intersection_readings):
-                self.changeVelocity(0.05)
-                self.get_logger().info("Slowing down...")
-                self.near_intersection = True
-            else:
-                line_deviation = self.calculateLineDeviation(regular_readings)
-                line_angle = self.calculateLineAngle(regular_readings)
+            line_deviation = self.calculateLineDeviation(readings)
+
+            if not self.near_intersection:
+                line_angle = self.calculateLineAngle(readings)
                 self.sendPIDInput(line_deviation, line_angle)
+            else:
+                self.sendPIDInput(line_deviation, 0.0)
+
+        if not self.nearIntersection(readings) and self.near_intersection:
+            self.near_intersection = False
+            self.get_logger().info("AWAY FROM INTERSECTION")
+
+
+        # # Check if the turn is completed
+        # if self.MODE == "TURNING":
+        #     if regular_readings[4] < self.threshold:
+        #         self.stop()
+        #         self.MODE = "FORWARD"
+        #         self.get_logger().info("CONTINUING JOURNEY")
+        #         self.stop()
+        #         self.changeVelocity(0.3)
+        #         self.driveForwards(5, 0.3)
+        #         self.near_intersection = False
+        # else:
+        #     if self.onIntersection(regular_readings) and self.near_intersection:
+        #         self.turnRight()
+        #         self.get_logger().info("TURNING")
+        #         time.sleep(2)
+        #         self.MODE = "TURNING"
+        #     elif self.nearIntersection(intersection_readings):
+        #         self.changeVelocity(0.05)
+        #         self.get_logger().info("Slowing down...")
+        #         self.near_intersection = True
+        #     else:
+        #         line_deviation = self.calculateLineDeviation(regular_readings)
+        #         line_angle = self.calculateLineAngle(regular_readings)
+        #         self.sendPIDInput(line_deviation, line_angle)
             
 
                 # self.near_intersection = self.nearIntersection(readings)
@@ -219,7 +275,7 @@ def main():
                 main_controller.main_control_loop(response)
             else:
                 main_controller.get_logger().warn("Received empty sensor data")
-            time.sleep(0.1)  # Client request Hz 
+            time.sleep(0.01)  # Client request Hz 
     except KeyboardInterrupt:
         main_controller.get_logger().info("KeyboardInterrupt, shutting down.")
     finally:
