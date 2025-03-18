@@ -25,6 +25,7 @@ class MotorController(Node):
         motoroutput.linear.x = self.linear_velocity
         motoroutput.linear.y = msg.position_correction
         motoroutput.angular.z = msg.orientation_correction
+        self.get_logger().info(f"Angle correction: {motoroutput.angular.z}")
         self.gzmotorpub.publish(motoroutput)
 
 def main(args=None):

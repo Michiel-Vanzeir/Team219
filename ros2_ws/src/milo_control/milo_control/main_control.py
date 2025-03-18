@@ -35,6 +35,8 @@ class MainController(Node):
         self.front_ldrs_indices = [0, 1, 7]
         self.ldr_circle_radius = 3.5
 
+        self.stopped = False
+
         # Wait for ROS to initialize
         time.sleep(8)
 
@@ -50,6 +52,7 @@ class MainController(Node):
         return  all(ldr_readings[index] < self.threshold for index in self.front_ldrs_indices)
     
     def nearIntersection(self, ldr_readings):
+        self.get_logger().info(f"{sum([reading < self.threshold for reading in ldr_readings])}")
         return sum([reading < self.threshold for reading in ldr_readings]) <= 2
 
     def turnRight(self):
@@ -61,9 +64,8 @@ class MainController(Node):
         time.sleep(2.5)
 
         while True:
-            front_ldr_reading = self.send_request().ldr_readings[0]
-            if front_ldr_reading < self.threshold:  # Front LDR sees black
-                self.get_logger().info("STOP")
+            intersection_reading = self.send_request().ldr_readings[8]
+            if intersection_reading < self.threshold:
                 break
             time.sleep(0.01)
 
@@ -77,10 +79,7 @@ class MainController(Node):
         motor_cmd.linear.x = velocity
         self.motorpub.publish(motor_cmd)
 
-        # time.sleep(duration)
-
-        # motor_cmd.linear.x = 0.0
-        # self.motorpub.publish(motor_cmd)
+        time.sleep(duration)
 
     # Calculates the deviation from the line using a weighted average
     def calculateLineDeviation(self, ldr_readings):
@@ -207,24 +206,17 @@ class MainController(Node):
             # no => PID + angle correction
                 # Calculate line deviation and angle => PID input
     
-        #self.get_logger().info(f"Readings: {readings[0]}")
-        if self.onIntersection(readings) and not self.near_intersection:
+        if self.onIntersection(readings):
             self.get_logger().info("TURNING")
             self.turnRight()
-            self.near_intersection = True
+            self.driveForwards(velocity=0.4, duration=1.5)
             self.get_logger().info("TURNED")
         else:
-            line_deviation = self.calculateLineDeviation(readings)
-
-            if not self.near_intersection:
-                line_angle = self.calculateLineAngle(readings)
-                self.sendPIDInput(line_deviation, line_angle)
-            else:
-                self.sendPIDInput(line_deviation, 0.0)
-
-        if not self.nearIntersection(readings) and self.near_intersection:
-            self.near_intersection = False
-            self.get_logger().info("AWAY FROM INTERSECTION")
+            line_deviation = self.calculateLineDeviation(readings)         
+            self.get_logger().info(f"Line deviation: {line_deviation}")   
+            line_angle = self.calculateLineAngle(readings)
+            self.sendPIDInput(line_deviation, line_angle)
+     
 
 
         # # Check if the turn is completed
@@ -275,7 +267,7 @@ def main():
                 main_controller.main_control_loop(response)
             else:
                 main_controller.get_logger().warn("Received empty sensor data")
-            time.sleep(0.01)  # Client request Hz 
+            time.sleep(0.05)  # Client request Hz 
     except KeyboardInterrupt:
         main_controller.get_logger().info("KeyboardInterrupt, shutting down.")
     finally:
